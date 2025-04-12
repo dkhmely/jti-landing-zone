@@ -1,0 +1,46 @@
+name: Deploy Landing Zone to Azure
+
+on:
+  push:
+    branches:
+      - dev
+      - qa
+      - stage
+      - main
+
+env:
+  TF_VAR_environment: ${{ github.ref_name }}
+  ARM_SUBSCRIPTION_ID: ${{ secrets.SUBSCRIPTION_ID }}
+  ARM_CLIENT_ID: ${{ secrets.CLIENT_ID }}
+  ARM_CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+  ARM_TENANT_ID: ${{ secrets.TENANT_ID }}
+
+jobs:
+  terraform-plan:
+    name: Terraform Plan
+    runs-on: ubuntu-latest
+    environment: ${{ github.ref_name }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Extract Branch Name
+        run: echo "BRANCH_NAME=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        working-directory:  IaC
+        run: terraform init -backend-config="backend.conf"
+
+      - name: Terraform Plan
+        working-directory:  IaC
+        run: terraform plan -out=tfplan -var="environment=${{ env.BRANCH_NAME }}"
+
+      - name: Upload Plan Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: tfplan
+          path: IaC/tfplan
