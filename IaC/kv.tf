@@ -11,10 +11,10 @@ resource "azurerm_key_vault" "key_vault" {
   sku_name = "standard"
 }
 
-# resource "azurerm_key_vault_secret" "secret" {
-#   name         = "${var.application}-${var.env}-sp"
-#   value        = azuread_application_password.lz_app_password.value
-#   key_vault_id = azurerm_key_vault.key_vault.id
+resource "azurerm_key_vault_secret" "secret" {
+  name         = "${var.application}-${var.env}-sp"
+  value        = azuread_application_password.lz_app_password.value
+  key_vault_id = azurerm_key_vault.key_vault.id
 
-#   depends_on = [azurerm_key_vault.key_vault, azuread_application_password.lz_app_password]
-# }
+  depends_on = [azurerm_key_vault.key_vault, azuread_application_password.lz_app_password]
+}
