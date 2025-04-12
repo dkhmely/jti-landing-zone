@@ -1,12 +1,12 @@
 name: Deploy Landing Zone to Azure
 
 on:
-  push:
-    branches:
-      - dev
-      - qa
-      - stage
-      - main
+  # push:
+  #   branches:
+  #     - dev
+  #     - qa
+  #     - stage
+  #     - main
 
   workflow_dispatch:
     inputs:
