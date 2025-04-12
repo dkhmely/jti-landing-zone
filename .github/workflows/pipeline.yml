@@ -40,7 +40,7 @@ jobs:
 
       - name: Terraform Plan
         working-directory:  IaC
-        run: terraform plan -out=tfplan -var="environment=${{ env.ENV }}"
+        run: terraform plan -out=tfplan -var="env=${{ env.ENV }}"
 
       - name: Upload Plan Artifact
         uses: actions/upload-artifact@v4
