@@ -31,6 +31,10 @@ jobs:
         working-directory: IaC
         run: terraform fmt -check -recursive
 
+      - name: Terraform Init (No backend)
+        working-directory: IaC
+        run: terraform init -backend=false -input=false -upgrade
+
       - name: Terraform Validate
         working-directory: IaC
         run: terraform validate
