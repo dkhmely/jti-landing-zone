@@ -123,13 +123,14 @@ jobs:
     if: github.event_name == 'workflow_dispatch' && github.event.inputs.action == 'destroy'
     runs-on: ubuntu-latest
     environment:
-      name: ${{ github.event.inputs.environment }}
-    env:
-      ENV: ${{ github.event.inputs.environment }}
+      name: ${{ github.ref_name }}
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Extract Branch Name
+        run: echo "ENV=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
 
       - name: Generate backend.conf
         run: envsubst < IaC/backend-template.conf > IaC/backend.conf
