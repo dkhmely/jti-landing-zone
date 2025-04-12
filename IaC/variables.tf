@@ -1,14 +1,14 @@
 variable "env" {
-  type = string
+  type    = string
   default = "poc"
 }
 
 variable "location" {
-  type = string
+  type    = string
   default = "North Europe"
 }
 
 variable "application" {
-  type = string
+  type    = string
   default = "jti"
 }

@@ -1,6 +1,6 @@
 resource "azuread_application_registration" "lz_app_registration" {
-  display_name     = "${var.application}-${var.env}-sp"
-  description      = "Landing Zone App registration"
+  display_name = "${var.application}-${var.env}-sp"
+  description  = "Landing Zone App registration"
 }
 
 resource "azuread_service_principal" "lz_app_sp" {

@@ -16,8 +16,28 @@ env:
   ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
 
 jobs:
+  lint:
+    name: Terraform Validate & Format
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Format Check
+        working-directory: IaC
+        run: terraform fmt -check -recursive
+
+      - name: Terraform Validate
+        working-directory: IaC
+        run: terraform validate
+
   terraform-plan:
     name: Terraform Plan
+    needs: lint
     runs-on: ubuntu-latest
     environment: ${{ github.ref_name }}
 
@@ -35,11 +55,11 @@ jobs:
         uses: hashicorp/setup-terraform@v3
 
       - name: Terraform Init
-        working-directory:  IaC
+        working-directory: IaC
         run: terraform init -backend-config="backend.conf"
 
       - name: Terraform Plan
-        working-directory:  IaC
+        working-directory: IaC
         run: terraform plan -out=tfplan -var="env=${{ env.ENV }}"
 
       - name: Upload Plan Artifact
